@@ -10,9 +10,39 @@ variable "zone" {
   type = string
 }
 
+variable "region" {
+  type = string
+}
+
 variable "basename" {
   type = string
 }
+
+variable "instance-disksize" {
+  type = string
+}
+variable "instance-disktype" {
+  type = string
+}
+
+variable "instance-image" {
+  type = string
+}
+
+variable "instance-machine-type" {
+  type = string
+}
+
+variable "instance-name" {
+  type = string
+}
+
+variable "instance-tags" {
+  type = list(string)
+}
+
+
+
 
 
 # Enabling services in your GCP project
@@ -33,20 +63,21 @@ resource "google_project_service" "all" {
 }
 
 # Create Instance
-resource "google_compute_instance" "sample" {
-  name         = "${var.basename}-sample"
-  machine_type = "n1-standard-1"
+resource "google_compute_instance" "instance" {
+  name         = var.instance-name
+  machine_type = var.instance-machine-type
   zone         = var.zone
   project      = var.project_id
+  tags         = var.instance-tags
 
 
   boot_disk {
     auto_delete = true
-    device_name = "${var.basename}-sample"
+    device_name = var.instance-name
     initialize_params {
-      image = "family/debian-10"
-      size  = 200
-      type  = "pd-standard"
+      image = var.instance-image
+      size  = var.instance-disksize
+      type  = var.instance-disktype
     }
   }
 
@@ -61,6 +92,8 @@ resource "google_compute_instance" "sample" {
 }
 
 
-
+output "cmd"{
+  value = "gcloud compute ssh ${var.instance-name}"
+}
 
 

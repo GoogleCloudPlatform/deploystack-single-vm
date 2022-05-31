@@ -1,13 +1,14 @@
-{	"title":"SIMPLE VM",
+{	"title":"SINGLE VM",
 	"description": "This process will create just a VM",
 	"duration":1,
 	"collect_project":true,
 	"collect_project_number":true,
 	"collect_zone":true,
 	"collect_region":true,
+	"configure_gce_instance": true,
 	"region_type":"compute",
 	"region_default":"us-central1",
 	"hard_settings":{
-		"basename":"simplevm"
+		"basename":"singlevm"
 	}
 }
