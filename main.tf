@@ -58,9 +58,6 @@ variable "instance-tags" {
 }
 
 
-
-
-
 # Enabling services in your GCP project
 variable "gcp_service_list" {
   description = "The list of apis necessary for the project"
