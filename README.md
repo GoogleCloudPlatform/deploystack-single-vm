@@ -11,7 +11,7 @@ Terraform capabilities
 You can install this application using the `Open in Google Cloud Shell` button 
 below. 
 
-<a href="https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2FGoogleCloudPlatform%2Fdeploystack_singlevm&cloudshell_print=install.txt&shellonly=true">
+<a href="https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2FGoogleCloudPlatform%2Fdeploystack-single-vm&cloudshell_print=install.txt&shellonly=true">
         <img alt="Open in Cloud Shell" src="https://gstatic.com/cloudssh/images/open-btn.svg">
 </a>
 
