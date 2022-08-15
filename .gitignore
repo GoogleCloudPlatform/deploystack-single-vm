@@ -4,3 +4,4 @@ clean
 go.mod
 go.sum
 errFile
+.DS_Store
