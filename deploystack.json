@@ -1,5 +1,6 @@
 {	"title":"SINGLE VM",
 	"description": "This process will create just a VM",
+	"documentation_link": "https://cloud.google.com/shell/docs/cloud-shell-tutorials/deploystack/single-vm",
 	"duration":1,
 	"collect_project":true,
 	"collect_project_number":true,
