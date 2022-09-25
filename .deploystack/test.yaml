@@ -13,10 +13,10 @@
 # limitations under the License.
 
 steps:
-   - name: 'gcr.io/cloudshell-images/cloudshell:latest'
+   - name: 'gcr.io/ds-artifacts-cloudshell/deploystack_custom_image:latest'
      entrypoint: bash
      args: [ './deployastack/test-terraform' ]
-   - name: 'gcr.io/cloudshell-images/cloudshell:latest'
+   - name: 'gcr.io/ds-artifacts-cloudshell/deploystack_custom_image:latest'
      entrypoint: bash
      args: [ './deployastack/test-deploystack' ]  
 timeout: 2200s
