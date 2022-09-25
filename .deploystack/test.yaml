@@ -17,7 +17,7 @@ steps:
      entrypoint: bash
      args: [ './.deploystack/test-terraform' ]
    - name: 'gcr.io/ds-artifacts-cloudshell/deploystack_custom_image:latest'
-     entrypoint: bash
+     entrypoint: expect
      args: [ './.deploystack/test-deploystack' ]  
 timeout: 2200s
 options:
