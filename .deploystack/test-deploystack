@@ -10,7 +10,5 @@ expect "Choose number from list"
 send "\r"
 expect "Do you want to use the default? ('No' means custom): "
 send "\r"
-interact
 
 spawn deploystack uninstall
-interact
