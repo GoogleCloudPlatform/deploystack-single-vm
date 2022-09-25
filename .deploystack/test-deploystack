@@ -1,0 +1,16 @@
+#!/usr/bin/expect
+
+
+
+spawn deploystack install
+
+expect "Press the Enter Key to continue"
+send "\r"
+expect "Choose number from list"
+send "\r"
+expect "Do you want to use the default? ('No' means custom): "
+send "\r"
+interact
+
+spawn deploystack uninstall
+interact
