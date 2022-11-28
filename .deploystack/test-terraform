@@ -80,19 +80,19 @@ terraformDIR=terraform
 
 gcloud config set project ${PROJECT}
 
-# terraform -chdir="$terraformDIR" init 
-# terraform -chdir="$terraformDIR" apply -auto-approve \
-#     -var project_id="${PROJECT}" \
-#     -var project_number="${PROJECT_NUMBER}" \
-#     -var zone="${ZONE}" \
-#     -var basename="${BASENAME}" \
-#     -var region="${REGION}" \
-#     -var instance-disksize="${DISKSIZE}" \
-#     -var instance-disktype="${DISKTYPE}" \
-#     -var instance-image="${DISKIMAGE}" \
-#     -var instance-machine-type="${MACHINETYPE}" \
-#     -var instance-name="${NAME}" \
-#     -var instance-tags="${TAGS}" 
+terraform -chdir="$terraformDIR" init 
+terraform -chdir="$terraformDIR" apply -auto-approve \
+    -var project_id="${PROJECT}" \
+    -var project_number="${PROJECT_NUMBER}" \
+    -var zone="${ZONE}" \
+    -var basename="${BASENAME}" \
+    -var region="${REGION}" \
+    -var instance-disksize="${DISKSIZE}" \
+    -var instance-disktype="${DISKTYPE}" \
+    -var instance-image="${DISKIMAGE}" \
+    -var instance-machine-type="${MACHINETYPE}" \
+    -var instance-name="${NAME}" \
+    -var instance-tags="${TAGS}" 
 
 
 section_open "Test Instance"
