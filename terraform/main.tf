@@ -14,59 +14,6 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  type = string
-}
-
-variable "project_number" {
-  type = string
-}
-
-variable "zone" {
-  type = string
-}
-
-variable "region" {
-  type = string
-}
-
-variable "basename" {
-  type = string
-}
-
-variable "instance-disksize" {
-  type = string
-}
-variable "instance-disktype" {
-  type = string
-}
-
-variable "instance-image" {
-  type = string
-}
-
-variable "instance-machine-type" {
-  type = string
-}
-
-variable "instance-name" {
-  type = string
-}
-
-variable "instance-tags" {
-  type = list(string)
-}
-
-
-# Enabling services in your GCP project
-variable "gcp_service_list" {
-  description = "The list of apis necessary for the project"
-  type        = list(string)
-  default = [
-    "compute.googleapis.com",
-  ]
-}
-
 resource "google_project_service" "all" {
   for_each                   = toset(var.gcp_service_list)
   project                    = var.project_number
@@ -103,10 +50,3 @@ resource "google_compute_instance" "instance" {
 
   depends_on = [google_project_service.all]
 }
-
-
-output "cmd"{
-  value = "gcloud compute ssh ${var.instance-name}"
-}
-
-
