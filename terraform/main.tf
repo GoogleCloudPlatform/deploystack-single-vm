@@ -22,6 +22,28 @@ resource "google_project_service" "all" {
   disable_on_destroy         = false
 }
 
+resource "google_compute_network" "main" {
+  provider                = google-beta
+  name                    = "${var.basename}-network"
+  auto_create_subnetworks = true
+  project                 = var.project_id
+}
+
+resource "google_compute_firewall" "default-allow-ssh" {
+  name    = "deploystack-allow-ssh"
+  project = var.project_number
+  network = google_compute_network.main.id
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+
+}
+
+
 # Create Instance
 resource "google_compute_instance" "instance" {
   name         = var.instance-name
@@ -42,7 +64,7 @@ resource "google_compute_instance" "instance" {
   }
 
   network_interface {
-    network = "default"
+    network = google_compute_network.main.id
     access_config {
       // Ephemeral public IP
     }

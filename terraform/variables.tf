@@ -32,6 +32,7 @@ variable "region" {
 
 variable "basename" {
   type = string
+  default = "singlevm"
 }
 
 variable "instance-disksize" {
