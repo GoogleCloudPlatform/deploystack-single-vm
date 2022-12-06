@@ -61,10 +61,35 @@ function evalTest() {
 
     printf "$expected is ok\n"
 }
+
+
+function generateProject(){
+    local __resultvar=$1
+    local __STACKSUFFIX=$2
+    local __RANDOMSUFFIX=$(
+        LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 8
+        echo
+    )
+    local __DATELABEL=$(date +%F)
+    local VALUE=ds-test-$__STACKSUFFIX-$__RANDOMSUFFIX
+    local __BA=$(gcloud beta billing accounts list --format="value(ACCOUNT_ID)" --filter="displayName:Cloud*" | xargs)
+   
+    gcloud projects create $VALUE --labels="deploystack-disposable-test-project=$__DATELABEL"
+    gcloud beta billing projects link $VALUE --billing-account=$__BA
+    eval $__resultvar="'$VALUE'"
+}
+
+
 # END DON'T REMOVE FROM test script.
 
 
-get_project_id PROJECT
+suffix=sv
+
+section_open "Generate random test project"
+    generateProject PROJECT "$suffix"
+section_close
+
+
 gcloud services enable cloudresourcemanager.googleapis.com --project=$PROJECT
 get_project_number PROJECT_NUMBER $PROJECT
 REGION=us-central1
@@ -133,6 +158,10 @@ section_open "Test Instance does not exist"
     evalTest 'gcloud compute instances describe $NAME --zone="$ZONE" --format="value(name)"'  "EXPECTERROR"
 section_close
 
+
+section_open "Delete Test Project"
+    gcloud projects delete $PROJECT -q
+section_close
 
 printf "$DIVIDER"
 printf "CONGRATS!!!!!!! \n"

@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
+data "google_project" "project" {
+  project_id =                     var.project_id
+}
+
+
+
 resource "google_project_service" "all" {
   for_each                   = toset(var.gcp_service_list)
-  project                    = var.project_number
+  project                    = data.google_project.project.id
   service                    = each.key
   disable_dependent_services = false
   disable_on_destroy         = false
@@ -26,12 +32,15 @@ resource "google_compute_network" "main" {
   provider                = google-beta
   name                    = "${var.basename}-network"
   auto_create_subnetworks = true
-  project                 = var.project_id
+  project                 = data.google_project.project.name
+  depends_on = [
+    google_project_service.all
+  ]
 }
 
 resource "google_compute_firewall" "default-allow-ssh" {
   name    = "deploystack-allow-ssh"
-  project = var.project_number
+  project = data.google_project.project.name
   network = google_compute_network.main.id
 
   allow {
@@ -49,7 +58,7 @@ resource "google_compute_instance" "instance" {
   name         = var.instance-name
   machine_type = var.instance-machine-type
   zone         = var.zone
-  project      = var.project_id
+  project      = data.google_project.project.name
   tags         = var.instance-tags
 
 
