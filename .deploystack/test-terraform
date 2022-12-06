@@ -85,6 +85,9 @@ function generateProject(){
 
 suffix=sv
 
+user=$(gcloud config get account)
+echo "USER: $user"
+
 section_open "Generate random test project"
     generateProject PROJECT "$suffix"
 section_close
