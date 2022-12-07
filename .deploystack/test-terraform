@@ -85,9 +85,8 @@ function generateProject(){
 
 suffix=sv
 
-user=$(gcloud config get account)
-echo "USER: $user"
-
+# This is only needed if you tests fail alot because of overlaping runs of the
+# same set of tests.
 section_open "Generate random test project"
     generateProject PROJECT "$suffix"
 section_close
@@ -161,7 +160,9 @@ section_open "Test Instance does not exist"
     evalTest 'gcloud compute instances describe $NAME --zone="$ZONE" --format="value(name)"'  "EXPECTERROR"
 section_close
 
-
+# This is only needed if you tests fail alot because of overlaping runs of the
+# same set of tests. Really don't do this if you don't want to severly irritate 
+# @tpryan
 section_open "Delete Test Project"
     gcloud projects delete $PROJECT -q
 section_close
