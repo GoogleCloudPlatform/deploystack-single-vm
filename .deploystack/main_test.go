@@ -21,33 +21,46 @@ var Queue = []dstester.GCloudCMD{
 		Name:    "test-instance",
 		Project: project,
 	},
+	{
+		Product: "compute networks",
+		Name:    "deploystack-allow-ssh",
+		Project: project,
+	},
 }
 
 var vars = map[string]string{
-	"REGION":       "us-central1",
-	"ZONE":         "us-central1-a",
-	"BASENAME":     "singlevm",
-	"DISKSIZE":     "200",
-	"DISKTYPE":     "pd-standard",
-	"DISKIMAGE":    "debian-cloud/debian-11-bullseye-v20220519",
-	"MACHINETYPE":  "n1-standard-1",
-	"NAME":         "singlevm-instance",
-	"TAGS":         "[\"http-server\",\"https-server\"]",
-	"terraformDIR": "terraform",
+	"project_id":            project,
+	"project_number":        "753592922120",
+	"region":                "us-central1",
+	"zone":                  "us-central1-a",
+	"basename":              "singlevm",
+	"instance-disksize":     "200",
+	"instance-disktype":     "pd-standard",
+	"instance-image":        "debian-cloud/debian-11-bullseye-v20220519",
+	"instance-machine-type": "n1-standard-1",
+	"instance-name":         "singlevm-instance",
+	"instance-tags":         "[\"http-server\",\"https-server\"]",
 }
 
 var tf = dstester.Terraform{
-	Dir:  "../terraform",
+	Dir:  "/Users/tpryan/google/Projects/appinabox/single-vm/terraform",
 	Vars: vars,
 }
 
 func TestAssertions(t *testing.T) {
-	out, err := tf.Init()
-	if err != nil {
-		t.Fatalf("expected no error, got: '%v'", err)
-	}
+	// out, err := tf.Init()
+	// if err != nil {
+	// 	t.Fatalf("expected no error, got: '%v'", err)
+	// }
 
-	fmt.Printf("out: %s\n", out)
+	// fmt.Printf("out: %s\n", out)
+
+	// out2, err := tf.Exec(vars)
+	// if err != nil {
+	// 	t.Fatalf("expected no error, got: '%v'", err)
+	// }
+
+	// fmt.Printf("out2: %s\n", out2)
 
 	testsExists := map[string]struct {
 		input dstester.GCloudCMD
@@ -73,21 +86,21 @@ func TestAssertions(t *testing.T) {
 		})
 	}
 
-	testsNotExists := map[string]struct {
-		input dstester.GCloudCMD
-	}{}
-	for _, v := range Queue {
-		testsNotExists[fmt.Sprintf("Test %s does not exist", v.Name)] = struct {
-			input dstester.GCloudCMD
-		}{v}
-	}
+	// testsNotExists := map[string]struct {
+	// 	input dstester.GCloudCMD
+	// }{}
+	// for _, v := range Queue {
+	// 	testsNotExists[fmt.Sprintf("Test %s does not exist", v.Name)] = struct {
+	// 		input dstester.GCloudCMD
+	// 	}{v}
+	// }
 
-	for name, tc := range testsNotExists {
-		t.Run(name, func(t *testing.T) {
-			_, err := tc.input.Describe()
-			if err == nil {
-				t.Fatalf("expected error, got no error")
-			}
-		})
-	}
+	// for name, tc := range testsNotExists {
+	// 	t.Run(name, func(t *testing.T) {
+	// 		_, err := tc.input.Describe()
+	// 		if err == nil {
+	// 			t.Fatalf("expected error, got no error")
+	// 		}
+	// 	})
+	// }
 }
