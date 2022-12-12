@@ -15,6 +15,9 @@
 steps:
    - name: 'gcr.io/ds-artifacts-cloudshell/deploystack_custom_image:latest'
      entrypoint: bash
+     args: [ './.deploystack/clean' ]
+   - name: 'gcr.io/ds-artifacts-cloudshell/deploystack_custom_image:latest'
+     entrypoint: bash
      args: [ './.deploystack/test-terraform' ]
   #  - name: 'gcr.io/ds-artifacts-cloudshell/deploystack_custom_image:latest'
   #    entrypoint: expect
