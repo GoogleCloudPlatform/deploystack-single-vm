@@ -2,27 +2,30 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/deploystack/dstester"
 )
 
-var project = "ds-test-tf-da43f3d"
+var (
+	project  = "ds-test-tf-da43f3d"
+	basename = "singlevm"
+	debug    = false
+)
 
 var Queue = []dstester.GCloudCMD{
 	{
-		Product: "projects",
-		Name:    "ds-test-tf-da43f3d",
-		Project: project,
-	},
-	{
 		Product: "compute instances",
-		Name:    "test-instance",
+		Name:    fmt.Sprintf("%s-instances", basename),
 		Project: project,
 	},
 	{
 		Product: "compute networks",
+		Name:    fmt.Sprintf("%s-network", basename),
+		Project: project,
+	},
+	{
+		Product: "compute firewall-rules",
 		Name:    "deploystack-allow-ssh",
 		Project: project,
 	},
@@ -43,64 +46,23 @@ var vars = map[string]string{
 }
 
 var tf = dstester.Terraform{
-	Dir:  "/Users/tpryan/google/Projects/appinabox/single-vm/terraform",
+	Dir:  "../terraform",
 	Vars: vars,
 }
 
 func TestAssertions(t *testing.T) {
-	// out, err := tf.Init()
-	// if err != nil {
-	// 	t.Fatalf("expected no error, got: '%v'", err)
-	// }
+	tf.InitApplyForTest(t, debug)
+	dstester.TextExistence(Queue, t)
+	tf.DestroyForTest(t, debug)
+	dstester.TextNonExistence(Queue, t)
+}
 
-	// fmt.Printf("out: %s\n", out)
+func TestCreation(t *testing.T) {
+	tf.InitApplyForTest(t, debug)
+	dstester.TextExistence(Queue, t)
+}
 
-	// out2, err := tf.Exec(vars)
-	// if err != nil {
-	// 	t.Fatalf("expected no error, got: '%v'", err)
-	// }
-
-	// fmt.Printf("out2: %s\n", out2)
-
-	testsExists := map[string]struct {
-		input dstester.GCloudCMD
-		want  string
-	}{}
-	for _, v := range Queue {
-		testsExists[fmt.Sprintf("Test %s exists", v.Name)] = struct {
-			input dstester.GCloudCMD
-			want  string
-		}{v, v.Name}
-	}
-
-	for name, tc := range testsExists {
-		t.Run(name, func(t *testing.T) {
-			got, err := tc.input.Describe()
-			if err != nil {
-				t.Fatalf("expected no error, got: '%v'", err)
-			}
-
-			if !reflect.DeepEqual(tc.want, got) {
-				t.Fatalf("expected: '%v', got: '%v'", tc.want, got)
-			}
-		})
-	}
-
-	// testsNotExists := map[string]struct {
-	// 	input dstester.GCloudCMD
-	// }{}
-	// for _, v := range Queue {
-	// 	testsNotExists[fmt.Sprintf("Test %s does not exist", v.Name)] = struct {
-	// 		input dstester.GCloudCMD
-	// 	}{v}
-	// }
-
-	// for name, tc := range testsNotExists {
-	// 	t.Run(name, func(t *testing.T) {
-	// 		_, err := tc.input.Describe()
-	// 		if err == nil {
-	// 			t.Fatalf("expected error, got no error")
-	// 		}
-	// 	})
-	// }
+func TestDestruction(t *testing.T) {
+	tf.DestroyForTest(t, debug)
+	dstester.TextNonExistence(Queue, t)
 }
