@@ -80,12 +80,13 @@ ZONE=us-central1-a
 BASENAME=singlevm
 LOCATION=US
 
+section_open "Removing Network"
+    gcloud compute networks delete $BASENAME-network -q
+section_close
 
-
-
-
-
-
+section_open "Removing Firewall Rule"
+    gcloud compute firewall-rules delete deploystack-allow-ssh -q
+section_close
 
 section_open "Removing Compute Engine instance"
     gcloud compute instances delete $BASENAME-instance -q
